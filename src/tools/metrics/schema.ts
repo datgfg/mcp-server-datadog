@@ -15,3 +15,19 @@ export const QueryMetricsZodSchema = z.object({
 })
 
 export type QueryMetricsArgs = z.infer<typeof QueryMetricsZodSchema>
+
+// Schema for listing all metrics
+export const ListMetricsZodSchema = z.object({
+  from: z
+    .number()
+    .optional()
+    .describe(
+      'Start of the timeframe (in seconds since Unix epoch) to list active metrics. Defaults to 24h ago if omitted.',
+    ),
+  tagFilter: z
+    .string()
+    .optional()
+    .describe('Filter metrics that have been submitted with the given tags.'),
+})
+
+export type ListMetricsArgs = z.infer<typeof ListMetricsZodSchema>

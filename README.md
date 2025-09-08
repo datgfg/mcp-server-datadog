@@ -88,28 +88,40 @@ MCP server for the Datadog API, enabling incident management and more.
      - `operation` (optional string): Filter by operation name.
    - **Returns**: Array of matching traces from Datadog APM.
 
-9. `list_hosts`
+9. `list_spans`
 
-   - Get list of hosts from Datadog.
+   - Get a list of spans matching a search query (Datadog Spans Search API).
    - **Inputs**:
-     - `filter` (optional string): Filter string for search results.
-     - `sort_field` (optional string): Field to sort hosts by.
-     - `sort_dir` (optional string): Sort direction (asc/desc).
-     - `start` (optional number): Starting offset for pagination.
-     - `count` (optional number): Max number of hosts to return (max: 1000).
-     - `from` (optional number): Search hosts from this UNIX timestamp.
-     - `include_muted_hosts_data` (optional boolean): Include muted hosts status and expiry.
-     - `include_hosts_metadata` (optional boolean): Include host metadata (version, platform, etc).
-   - **Returns**: Array of hosts with details including name, ID, aliases, apps, mute status, and more.
+     - `query` (string): Search query following spans syntax.
+     - `from` (number): Minimum timestamp for requested spans (epoch seconds).
+     - `to` (number): Maximum timestamp for requested spans (epoch seconds).
+     - `sort` (optional string): Order of spans in results ('timestamp' | '-timestamp').
+     - `cursor` (optional string): Pagination cursor from previous request.
+     - `limit` (optional number): Maximum number of spans to return (default 100).
+   - **Returns**: Spans list, count, and next cursor when available.
 
-10. `get_active_hosts_count`
+10. `list_hosts`
+
+- Get list of hosts from Datadog.
+- **Inputs**:
+  - `filter` (optional string): Filter string for search results.
+  - `sort_field` (optional string): Field to sort hosts by.
+  - `sort_dir` (optional string): Sort direction (asc/desc).
+  - `start` (optional number): Starting offset for pagination.
+  - `count` (optional number): Max number of hosts to return (max: 1000).
+  - `from` (optional number): Search hosts from this UNIX timestamp.
+  - `include_muted_hosts_data` (optional boolean): Include muted hosts status and expiry.
+  - `include_hosts_metadata` (optional boolean): Include host metadata (version, platform, etc).
+- **Returns**: Array of hosts with details including name, ID, aliases, apps, mute status, and more.
+
+11. `get_active_hosts_count`
 
     - Get the total number of active hosts in Datadog.
     - **Inputs**:
       - `from` (optional number): Number of seconds from which you want to get total number of active hosts (defaults to 2h).
     - **Returns**: Count of total active and up hosts.
 
-11. `mute_host`
+12. `mute_host`
 
     - Mute a host in Datadog.
     - **Inputs**:
@@ -119,14 +131,14 @@ MCP server for the Datadog API, enabling incident management and more.
       - `override` (optional boolean): If true and the host is already muted, replaces existing end time.
     - **Returns**: Success status and confirmation message.
 
-12. `unmute_host`
+13. `unmute_host`
 
     - Unmute a host in Datadog.
     - **Inputs**:
       - `hostname` (string): The name of the host to unmute.
     - **Returns**: Success status and confirmation message.
 
-13. `list_downtimes`
+14. `list_downtimes`
 
     - List scheduled downtimes from Datadog.
     - **Inputs**:
@@ -134,7 +146,7 @@ MCP server for the Datadog API, enabling incident management and more.
       - `monitorId` (optional number): Filter by monitor ID.
     - **Returns**: Array of scheduled downtimes with details including scope, monitor information, and schedule.
 
-14. `schedule_downtime`
+15. `schedule_downtime`
 
     - Schedule a downtime in Datadog.
     - **Inputs**:
@@ -152,20 +164,20 @@ MCP server for the Datadog API, enabling incident management and more.
         - `until` (optional number): UNIX timestamp for when the recurrence ends.
     - **Returns**: Scheduled downtime details including ID and active status.
 
-15. `cancel_downtime`
+16. `cancel_downtime`
 
     - Cancel a scheduled downtime in Datadog.
     - **Inputs**:
       - `downtimeId` (number): The ID of the downtime to cancel.
     - **Returns**: Confirmation of downtime cancellation.
 
-16. `get_rum_applications`
+17. `get_rum_applications`
 
     - Get all RUM applications in the organization.
     - **Inputs**: None.
     - **Returns**: List of RUM applications.
 
-17. `get_rum_events`
+18. `get_rum_events`
 
     - Search and retrieve RUM events from Datadog.
     - **Inputs**:
@@ -175,7 +187,7 @@ MCP server for the Datadog API, enabling incident management and more.
       - `limit` (optional number): Maximum number of events to return (default: 100).
     - **Returns**: Array of RUM events.
 
-18. `get_rum_grouped_event_count`
+19. `get_rum_grouped_event_count`
 
     - Search, group and count RUM events by a specified dimension.
     - **Inputs**:
@@ -185,7 +197,7 @@ MCP server for the Datadog API, enabling incident management and more.
       - `groupBy` (optional string): Dimension to group results by (default: "application.name").
     - **Returns**: Grouped event counts.
 
-19. `get_rum_page_performance`
+20. `get_rum_page_performance`
 
     - Get page (view) performance metrics from RUM data.
     - **Inputs**:
@@ -195,7 +207,7 @@ MCP server for the Datadog API, enabling incident management and more.
       - `metricNames` (array of strings): Array of metric names to retrieve (e.g., 'view.load_time', 'view.first_contentful_paint').
     - **Returns**: Performance metrics including average, min, max, and count for each metric.
 
-20. `get_rum_page_waterfall`
+21. `get_rum_page_waterfall`
 
     - Retrieve RUM page (view) waterfall data filtered by application name and session ID.
     - **Inputs**:
@@ -243,7 +255,7 @@ pnpm watch   # for development with auto-rebuild
 
 To use this with Claude Desktop, add the following to your `claude_desktop_config.json`:
 
-On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 
 ```json

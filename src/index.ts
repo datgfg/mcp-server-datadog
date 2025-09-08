@@ -16,17 +16,19 @@ import {
 import { log, mcpDatadogVersion } from './utils/helper'
 import { INCIDENT_TOOLS, createIncidentToolHandlers } from './tools/incident'
 import { METRICS_TOOLS, createMetricsToolHandlers } from './tools/metrics'
-import { LOGS_TOOLS, createLogsToolHandlers } from './tools/logs'
+// import { LOGS_TOOLS, createLogsToolHandlers } from './tools/logs'
 import { MONITORS_TOOLS, createMonitorsToolHandlers } from './tools/monitors'
 import {
   DASHBOARDS_TOOLS,
   createDashboardsToolHandlers,
 } from './tools/dashboards'
-import { TRACES_TOOLS, createTracesToolHandlers } from './tools/traces'
-import { HOSTS_TOOLS, createHostsToolHandlers } from './tools/hosts'
+// Traces tools have been consolidated under spans tools
+// import { TRACES_TOOLS, createTracesToolHandlers } from './tools/traces'
+import { SPANS_TOOLS, createSpansToolHandlers } from './tools/spans'
+// import { HOSTS_TOOLS, createHostsToolHandlers } from './tools/hosts'
 import { ToolHandlers } from './utils/types'
 import { createDatadogConfig } from './utils/datadog'
-import { createDowntimesToolHandlers, DOWNTIMES_TOOLS } from './tools/downtimes'
+// import { createDowntimesToolHandlers, DOWNTIMES_TOOLS } from './tools/downtimes'
 import { createRumToolHandlers, RUM_TOOLS } from './tools/rum'
 import { v2, v1 } from '@datadog/datadog-api-client'
 
@@ -55,12 +57,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       ...INCIDENT_TOOLS,
       ...METRICS_TOOLS,
-      ...LOGS_TOOLS,
+      // ...LOGS_TOOLS,
       ...MONITORS_TOOLS,
       ...DASHBOARDS_TOOLS,
-      ...TRACES_TOOLS,
-      ...HOSTS_TOOLS,
-      ...DOWNTIMES_TOOLS,
+      // ...TRACES_TOOLS,
+      ...SPANS_TOOLS,
+      // ...HOSTS_TOOLS,
+      // ...DOWNTIMES_TOOLS,
       ...RUM_TOOLS,
     ],
   }
@@ -79,12 +82,13 @@ const datadogConfig = createDatadogConfig({
 const TOOL_HANDLERS: ToolHandlers = {
   ...createIncidentToolHandlers(new v2.IncidentsApi(datadogConfig)),
   ...createMetricsToolHandlers(new v1.MetricsApi(datadogConfig)),
-  ...createLogsToolHandlers(new v2.LogsApi(datadogConfig)),
+  // ...createLogsToolHandlers(new v2.LogsApi(datadogConfig)),
   ...createMonitorsToolHandlers(new v1.MonitorsApi(datadogConfig)),
   ...createDashboardsToolHandlers(new v1.DashboardsApi(datadogConfig)),
-  ...createTracesToolHandlers(new v2.SpansApi(datadogConfig)),
-  ...createHostsToolHandlers(new v1.HostsApi(datadogConfig)),
-  ...createDowntimesToolHandlers(new v1.DowntimesApi(datadogConfig)),
+  // ...createTracesToolHandlers(new v2.SpansApi(datadogConfig)),
+  ...createSpansToolHandlers(new v2.SpansApi(datadogConfig)),
+  // ...createHostsToolHandlers(new v1.HostsApi(datadogConfig)),
+  // ...createDowntimesToolHandlers(new v1.DowntimesApi(datadogConfig)),
   ...createRumToolHandlers(new v2.RUMApi(datadogConfig)),
 }
 /**

@@ -1,6 +1,6 @@
 {
   "name": "@datgfg/mcp-server-datadog",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "MCP server for interacting with Datadog API",
   "repository": {
     "type": "git",
